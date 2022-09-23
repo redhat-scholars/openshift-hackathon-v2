@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Openshift Hackathon</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/openshift-hackathon-v2/openshift-hackathon/01-containers.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="02-openshift.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/openshift-hackathon-v2">Openshift Hackathon</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="openshift-hackathon" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="01-containers.html">1. Challenge 1 - Containers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="03-helm_services.html">3. Challenge 3 - Helm et Services</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="04-consommation-services.html">4. Challenge 4 - Consommation du service</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="05-observability.html">5. Challenge 5 - Observabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="06-resilience.html">6. Challenge 6 - Résilience et scalabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="07-gitops.html">7. Challenge 7 - GitOps</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Openshift Hackathon</a></li>
+    <li><a href="01-containers.html">1. Challenge 1 - Containers</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/openshift-hackathon-v2/edit/master/documentation/modules/ROOT/pages/01-containers.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_les_containers"><a class="anchor" href="#_les_containers"></a>Les containers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le premier challenge ca consister à containeriser une application.
+L&#8217;application à containeriser se trouve ici : <a href="https://github.com/sebastienblanc/antennas-front" class="bare">https://github.com/sebastienblanc/antennas-front</a></p>
+</div>
+<div class="paragraph">
+<p>Pensez bien à bien forker ce dépot ! Vous allez travailler sur cette application pendant les 2 prochaines journées.
+Pensez bien à packager votre application avant de commencer à la containeriser. (<code>mvn clean package</code>)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exercice1"><a class="anchor" href="#exercice1"></a>Containeriser votre app [<strong>Challenge 1.1</strong>] <em>Beginner</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pour ce premier challenge vous allez utiliser Docker et un DockerFile pour créer votre image de container.
+Vous pouvez créer votre Dockerfile mais regardez le repo forké, il y a peut-etre un Dockerfile déjà présent ;)</p>
+</div>
+<div class="paragraph">
+<p>Vous allez ensuite devoir démarrer ce container et faire en sorte que le port 8080 soit bien exposé.</p>
+</div>
+<div class="paragraph">
+<p>Et finalement démarrer encore une fois le container mais positionner une variable d&#8217;environnement <code>PING</code> avec la valeur <code>ERABLE</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 1.1.1</strong>] Screenshot du résultat du <code>docker build</code></p>
+</li>
+<li>
+<p>[<strong>Challenge 1.1.2</strong>] Screenshot du résultat du <code>docker run</code> et le résultat du <code>curl localhost:8080/rest/ping</code></p>
+</li>
+<li>
+<p>[<strong>Challenge 1.1.3</strong>] Screenshot du résultat du <code>curl localhost:8080/rest/ping</code> affichant <code>ERABLE</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exercice2"><a class="anchor" href="#exercice2"></a>Containeriser votre app avec JKube et pousser vers une registry [<strong>Challenge 1.2</strong>] <em>Advanced</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cette fois au lieu d&#8217;utiliser Docker vous allez utiliser JKube.
+Sun nous a écris un petit document qui vous aidera, gardez car vous en aurez besoin aussi cet après-midi pour le deuxième challenge, cherchez dans les annexes &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Pour la deuxième partie de ce challenge vous allez devoir pousser votre image de container dans une registry. Pour cela vous pouvez vous créer un compte sur <a href="https://quay.io/" class="bare">https://quay.io/</a></p>
+</div>
+<div class="sect2">
+<h3 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 1.2.1</strong>] Screenshot du résultat de la commande du plugin maven <code>oc:build</code></p>
+</li>
+<li>
+<p>[<strong>Challenge 1.2.2</strong>] Screenshot de votre repo quay.io où l&#8217;on voit l&#8217;image de container.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html">Openshift Hackathon</a></span>
+  <span class="next"><a href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

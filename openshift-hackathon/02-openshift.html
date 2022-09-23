@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Openshift Hackathon</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/openshift-hackathon-v2/openshift-hackathon/02-openshift.html">
+    <link rel="prev" href="01-containers.html">
+    <link rel="next" href="03-helm_services.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/openshift-hackathon-v2">Openshift Hackathon</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="openshift-hackathon" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="01-containers.html">1. Challenge 1 - Containers</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="03-helm_services.html">3. Challenge 3 - Helm et Services</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="04-consommation-services.html">4. Challenge 4 - Consommation du service</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="05-observability.html">5. Challenge 5 - Observabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="06-resilience.html">6. Challenge 6 - Résilience et scalabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="07-gitops.html">7. Challenge 7 - GitOps</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Openshift Hackathon</a></li>
+    <li><a href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/openshift-hackathon-v2/edit/master/documentation/modules/ROOT/pages/02-openshift.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_déployer_votre_image_de_container_sur_openshift"><a class="anchor" href="#_déployer_votre_image_de_container_sur_openshift"></a>Déployer votre image de container sur Openshift</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ce matin vous avez créé votre image de container, il est maintenant temps de la déployer sur votre cluster !</p>
+</div>
+<div class="sect2">
+<h3 id="_accès_au_cluster"><a class="anchor" href="#_accès_au_cluster"></a>Accès au cluster</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_déployer_directement_limage_sur_openshift_challenge_2_1_beginner"><a class="anchor" href="#_déployer_directement_limage_sur_openshift_challenge_2_1_beginner"></a>Déployer directement l&#8217;image sur OpenShift [<strong>Challenge 2.1</strong>]  <em>Beginner</em></h3>
+<div class="paragraph">
+<p>Utilisez la perspective "Developer" de votre console OpenShift pour déployer votre image.</p>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 2.1.1</strong>] L&#8217;URL de la route de votre application</p>
+</li>
+<li>
+<p>[<strong>Challenge 2.1.2</strong>] Screenshot montrant que vous avez réussis à scaler l&#8217;application à 2 Pods</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_utilisation_de_s2i_et_génération_des_resources_k8s_avec_jkube_challenge_2_2_advanced"><a class="anchor" href="#_utilisation_de_s2i_et_génération_des_resources_k8s_avec_jkube_challenge_2_2_advanced"></a>Utilisation de s2i et génération des resources K8s avec JKube [<strong>Challenge 2.2</strong>] <em>Advanced</em></h3>
+<div class="paragraph">
+<p>Dans cette deuxième partie du challenge vous allez déployer votre application de 2 manières différentes :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>En utilisant s2i et en pointant directement vers le repo Git de l&#8217;application.</p>
+</li>
+<li>
+<p>En générant les resources avec JKube, n&#8217;hésitez pas à revoir le doc de Sun qui donne des conseils.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>N&#8217;hésitez pas à créer des projets/namespace OpenShift pour chaque type de déploiement pour éviter tous conflits dans le nom des resources.</p>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 2.2.1</strong>] Screenshot du build dans OpenShift</p>
+</li>
+<li>
+<p>[<strong>Challenge 2.2.2</strong>] L&#8217;URL de la route de votre application</p>
+</li>
+<li>
+<p>[<strong>Challenge 2.2.3</strong>] Screenshot des resources k8s générées</p>
+</li>
+<li>
+<p>[<strong>Challenge 2.2.4</strong>] L&#8217;URL de la route de votre application</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="01-containers.html">1. Challenge 1 - Containers</a></span>
+  <span class="next"><a href="03-helm_services.html">3. Challenge 3 - Helm et Services</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
