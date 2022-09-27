@@ -95,10 +95,10 @@
   <div class="content">
 <article class="doc">
 <div class="sect1">
-<h2 id="_déployer_votre_image_de_container_sur_openshift"><a class="anchor" href="#_déployer_votre_image_de_container_sur_openshift"></a>Déployer votre image de container sur Openshift</h2>
+<h2 id="_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"><a class="anchor" href="#_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"></a>Déployer votre image de container sur Openshift avec Gitlab CI/CD</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ce matin vous avez créé votre image de container, il est maintenant temps de la déployer sur votre cluster !</p>
+<p>Ce matin vous avez créé votre image de container, il est maintenant temps de la déployer sur votre cluster!</p>
 </div>
 <div class="sect2">
 <h3 id="_accès_au_cluster"><a class="anchor" href="#_accès_au_cluster"></a>Accès au cluster</h3>
@@ -124,38 +124,60 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_utilisation_de_s2i_et_génération_des_resources_k8s_avec_jkube_challenge_2_2_advanced"><a class="anchor" href="#_utilisation_de_s2i_et_génération_des_resources_k8s_avec_jkube_challenge_2_2_advanced"></a>Utilisation de s2i et génération des resources K8s avec JKube [<strong>Challenge 2.2</strong>] <em>Advanced</em></h3>
+<h3 id="_creer_un_pipeline_gitlab_qui_deploie_lapplication_sur_openshift_challenge_2_2_advanced"><a class="anchor" href="#_creer_un_pipeline_gitlab_qui_deploie_lapplication_sur_openshift_challenge_2_2_advanced"></a>Creer un pipeline Gitlab qui deploie l&#8217;application sur Openshift [<strong>Challenge 2.2</strong>]  <em>Advanced</em></h3>
+<div class="sect3">
+<h4 id="_créer_un_projet_gitlab"><a class="anchor" href="#_créer_un_projet_gitlab"></a>Créer un projet Gitlab</h4>
 <div class="paragraph">
-<p>Dans cette deuxième partie du challenge vous allez déployer votre application de 2 manières différentes :</p>
+<p>Accédez à Gitlab et créez un account + projet.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>En utilisant s2i et en pointant directement vers le repo Git de l&#8217;application.</p>
-</li>
-<li>
-<p>En générant les resources avec JKube, n&#8217;hésitez pas à revoir le doc de Sun qui donne des conseils.</p>
-</li>
-</ul>
+</div>
+<div class="sect3">
+<h4 id="_installer_un_gitlab_runner_sur_openshift"><a class="anchor" href="#_installer_un_gitlab_runner_sur_openshift"></a>Installer Un Gitlab Runner sur OpenShift</h4>
+<div class="paragraph">
+<p>Avant de pouvoir utiliser Gitlab avec Openshift il faut que vous installiez un "Gitlab runner" sur Openshift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.
+N&#8217;oublier pas de créer un secret pour le runner avant de le deployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet Gitlab.</p>
 </div>
 <div class="paragraph">
-<p>N&#8217;hésitez pas à créer des projets/namespace OpenShift pour chaque type de déploiement pour éviter tous conflits dans le nom des resources.</p>
+<p>Une fois installé le Gitlab runner vous allez devoir créer un pipeline (gitlab-ci.yml) pour créer un image Docker de l&#8217;application, le pusher vers un Container Registry et déclencher le déploiement dans Openshift.
+Il y a peut-être un gitlab-ci.yml déjà present dans le repo pour vous mettre en route :)
+Les jobs auront besoin de droits pour pouvoir manipuler votre projet Openshift.  Voici un exemple de comment configurer le RBAC si votre runner tourne dans le meme projet que l&#8217;application:</p>
+</div>
+<div class="paragraph">
+<p><code>oc policy add-role-to-user edit system:serviceaccount:diod:default -n diod
+clusterrole.rbac.authorization.k8s.io/edit added: "system:serviceaccount:diod:default"</code></p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>[<strong>Challenge 2.2.1</strong>] Screenshot du build dans OpenShift</p>
+<p>[<strong>Challenge 2.2.1</strong>] Screenshot de l&#8217;Operator installé</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.2</strong>] L&#8217;URL de la route de votre application</p>
+<p>[<strong>Challenge 2.2.2</strong>] Screenshot de Gitlab CI/CD qui montre que Gitlab s&#8217;est connecté avec le Runner qui tourne sur Openshift</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.3</strong>] Screenshot des resources k8s générées</p>
+<p>[<strong>Challenge 2.2.3</strong>] L&#8217;URL de votre repo Gitlab qui contient le pipeline (qui a bien évidemment réussi)</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.4</strong>] L&#8217;URL de la route de votre application</p>
+<p>[<strong>Challenge 2.2.5</strong>] Screenshot des resources k8s générées</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bonus_installer_gitlab_pipeline_trigger_challenge_2_3_advanced"><a class="anchor" href="#_bonus_installer_gitlab_pipeline_trigger_challenge_2_3_advanced"></a>BONUS: Installer Gitlab Pipeline Trigger [<strong>Challenge 2.3</strong>] <em>Advanced</em></h3>
+<div class="paragraph">
+<p>On veut déclencher notre pipeline à chaque commit, pour cela il va falloir installer un Trigger.</p>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_3"><a class="anchor" href="#_preuves_à_fournir_3"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 3.2.1</strong>] Screenshot du trigger qui déclenche le pipeline (ou screenshot du log)</p>
 </li>
 </ul>
 </div>
