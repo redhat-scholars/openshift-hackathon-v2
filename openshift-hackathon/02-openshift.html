@@ -108,7 +108,7 @@
 <h3 id="_déployer_directement_limage_sur_openshift_challenge_2_1_beginner"><a class="anchor" href="#_déployer_directement_limage_sur_openshift_challenge_2_1_beginner"></a>Déployer directement l&#8217;image sur OpenShift [<strong>Challenge 2.1</strong>]  <em>Beginner</em></h3>
 <div class="paragraph">
 <p>Utilisez la perspective "Developer" de votre console OpenShift pour déployer votre image.
-Vous pouvez utiliser le projet "default" pour cette étape.</p>
+Vous pouvez utiliser le projet <strong>"default"</strong> pour cette étape.</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
@@ -129,11 +129,23 @@ Vous pouvez utiliser le projet "default" pour cette étape.</p>
 <div class="sect3">
 <h4 id="_installer_un_gitlab_runner_sur_openshift"><a class="anchor" href="#_installer_un_gitlab_runner_sur_openshift"></a>Installer Un Gitlab Runner sur OpenShift</h4>
 <div class="paragraph">
-<p>Pour ce challenge, créer le projet "diod" sur votre cluster OpenShift.</p>
+<p>Pour ce challenge, créer le projet <strong>"diod"</strong> sur votre cluster OpenShift.</p>
 </div>
 <div class="paragraph">
 <p>Avant de pouvoir utiliser Gitlab avec Openshift il faut que vous installiez un "Gitlab runner" sur Openshift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.
-N&#8217;oublier pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet Gitlab.</p>
+N&#8217;oublier pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet Gitlab.
+Pour créer le secret, utiliser le manifest suivant (celui de la documentation étant mal formaté) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">apiVersion: v1
+kind: Secret
+metadata:
+    name: gitlab-runner-secret
+type: Opaque
+stringData:
+    runner-registration-token: LE_TOKEN_GITLAB</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Une fois installé le Gitlab runner vous allez devoir créer un pipeline (gitlab-ci.yml) pour builder l&#8217;application et le pousser vers Openshift (qui va s&#8217;occuper de containeriser l&#8217;application et faire un déploiement 'rolling').
