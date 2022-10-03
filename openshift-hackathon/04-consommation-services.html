@@ -97,21 +97,49 @@
 <div class="sect1">
 <h2 id="_consommation_dun_service"><a class="anchor" href="#_consommation_dun_service"></a>Consommation d&#8217;un service</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Maintenant que nous avons déployé <code>antennas-incident</code> nous alons devoir modifier notre première application, <code>antennas-front</code>,  afin qu&#8217;elle puisse récupérer la liste des incidents du service distant.</p>
+</div>
+<div class="paragraph">
+<p>Il va falloir un petit peu coder :)</p>
+</div>
+<div class="paragraph">
+<p>Voici un guide sur comment utiliser le <code>rest-client</code> de Quarkus : <a href="https://quarkus.io/guides/rest-client" class="bare">https://quarkus.io/guides/rest-client</a></p>
+</div>
 <div class="sect2">
-<h3 id="_challenge_4_1_beginner"><a class="anchor" href="#_challenge_4_1_beginner"></a>[<strong>Challenge 4.1</strong>]  <em>Beginner</em></h3>
+<h3 id="_consommer_le_service_distant_avec_apikey_en_dur_challenge_4_1_beginner"><a class="anchor" href="#_consommer_le_service_distant_avec_apikey_en_dur_challenge_4_1_beginner"></a>Consommer le service distant avec APIKEY "en dur"  [<strong>Challenge 4.1</strong>]  <em>Beginner</em></h3>
+<div class="paragraph">
+<p>Le <code>antennas-incident</code> expose un point REST <code>/rest/incidents?api_key=mysecret</code> , pensez bien à utiliser la valeur correcte.
+Vous pouvez accéder au sein du cluster au service avec <code><a href="http://antennas-incident/" class="bare">http://antennas-incident/</a></code> , pour ceci pensez bien à rajouter une variable d’environnement avec cette clef :
+<code>ORG_SEBI_INCIDENT_INCIDENTSERVICE_MP_REST_URL</code> (Si bien sure vous avez fait un client rest <code>org.sebi.IncidentService</code>)</p>
+</div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
-<div class="paragraph">
-<p>*</p>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 4.1.1</strong>] URL de l&#8217;application front qui montre qu&#8217;elle consomme le service distant.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_challenge_4_2_advanced"><a class="anchor" href="#_challenge_4_2_advanced"></a>[<strong>Challenge 4.2</strong>] <em>Advanced</em></h3>
+<h3 id="_consommer_le_service_distant_en_utilisant_lapikey_fournit_par_le_secret_challenge_4_2_advanced"><a class="anchor" href="#_consommer_le_service_distant_en_utilisant_lapikey_fournit_par_le_secret_challenge_4_2_advanced"></a>Consommer le service distant en utilisant l&#8217;APIKEY fournit par le Secret [<strong>Challenge 4.2</strong>] <em>Advanced</em></h3>
+<div class="paragraph">
+<p>Au lieu de faire votre appel au service distant en passant l&#8217;APIKEY modifié l&#8217;application et les resources k8s afin de "coupler" le secret à votre application.</p>
+</div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
-<div class="paragraph">
-<p>*</p>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 4.2.1</strong>] Screenshot ou gist qui montre le <code>Deployment</code> est "couplé" au secret.</p>
+</li>
+<li>
+<p>[<strong>Challenge 4.2.2</strong>] URL de l&#8217;application front qui montre qu&#8217;elle consomme le service distant.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
