@@ -94,57 +94,91 @@
 <div class="sect1">
 <h2 id="_les_containers"><a class="anchor" href="#_les_containers"></a>Les containers</h2>
 <div class="sectionbody">
-
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>⚠️ Pré-requis</p>
+</div>
+<div class="paragraph">
+<p>Avant toute chose, assurez-vous d&#8217;avoir installé quelques outils de développement :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>OpenJDK</strong> : environnement Java de dévelopement</p>
+</li>
+<li>
+<p><strong>Maven</strong> : outil de construction des applications Java</p>
+</li>
+<li>
+<p><strong>Docker ou Podman</strong> : outil qui va nous permettre de construire et exécuter des conteneurs</p>
+</li>
+</ul>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Le premier challenge va consister à containeriser une application.
+L&#8217;application à containeriser se trouve ici : <a href="https://gitlab.com/redhat-scholars/antennas-front" class="bare">https://gitlab.com/redhat-scholars/antennas-front</a></p>
+</div>
+<div class="paragraph">
+<p>Pensez bien à forker ce dépôt ! Vous allez travailler sur cette application pendant les 2 prochaines journées.</p>
+</div>
+<div class="paragraph">
+<p>N&#8217;oubliez pas de packager votre application avant de commencer à la containeriser.
+Vous pouvez utiliser la commande Maven <code>mvn clean package</code>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_pré_requis"><a class="anchor" href="#_pré_requis"></a>Pré-requis</h2>
+<h2 id="exercice1"><a class="anchor" href="#exercice1"></a>Containeriser votre app [<strong>Challenge 1.1</strong>] <em>Beginner</em></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Avant toute chose, assurez-vous d&#8217;avoir installé quelques outils de développement :
-* <strong>OpenJDK</strong> : environnement Java de dévelopement
-* <strong>Maven</strong> : outil de construction des applications Java
-* <strong>Docker ou Podman</strong> : outil qui va nous permettre de construire et exécuter des conteneurs</p>
+<p>Pour ce premier challenge, vous allez utiliser Docker et un Dockerfile pour créer votre image de container.
+Vous pouvez créer votre Dockerfile mais regardez le repo forké, il y a peut-être un Dockerfile déjà présent ;)</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>Le premier challenge va consister à containeriser une application.
-L'application à containeriser se trouve ici : https://gitlab.com/redhat-scholars/antennas-front
-
-Pensez bien à forker ce dépôt ! Vous allez travailler sur cette application pendant les 2 prochaines journées.
-
-N'oubliez pas de packager votre application avant de commencer à la containeriser.
-Vous pouvez utiliser la commande Maven `mvn clean package`.
-
-
-[#exercice1]
-== Containeriser votre app [*Challenge 1.1*] __Beginner__
-
-Pour ce premier challenge, vous allez utiliser Docker et un Dockerfile pour créer votre image de container.
-Vous pouvez créer votre Dockerfile mais regardez le repo forké, il y a peut-être un Dockerfile déjà présent ;)
-
-Vous allez ensuite devoir démarrer ce container et faire en sorte que le port 8080 soit bien exposé.
-
-Et finalement démarrer encore une fois le container mais positionner une variable d'environnement `PING` avec la valeur `DIOD`.
-
-
-=== Preuves à fournir
-
-* [*Challenge 1.1.1*] Screenshot du résultat du `docker build`
-* [*Challenge 1.1.2*] Screenshot du résultat du `docker run` et le résultat du `curl localhost:8080/rest/ping`
-* [*Challenge 1.1.3*] Screenshot du résultat du `curl localhost:8080/rest/ping` affichant `DIOD`
-
-
-[#exercice2]
-== Pousser vers une registry [*Challenge 1.2*] __Advanced__
-
-Pour ce challenge vous allez devoir pousser votre image de container dans une registry. Pour cela, vous pouvez vous créer un compte sur https://quay.io/
-Par défaut, les images possées vers quay.io sont privées : pour la deuxième partie du challenge, l'image devra être rendue publique.
-
-=== Preuves à fournir
-
-* [*Challenge 1.2.1*] Screenshot de votre repo quay.io où l'on voit l'image de container.
-* [*Challenge 1.2.2*] Screenshot de votre repo quay.io où l'on voit la visibilité de l'image.</pre>
+<div class="paragraph">
+<p>Vous allez ensuite devoir démarrer ce container et faire en sorte que le port 8080 soit bien exposé.</p>
+</div>
+<div class="paragraph">
+<p>Et finalement démarrer encore une fois le container mais positionner une variable d&#8217;environnement <code>PING</code> avec la valeur <code>DIOD</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 1.1.1</strong>] Screenshot du résultat du <code>docker build</code></p>
+</li>
+<li>
+<p>[<strong>Challenge 1.1.2</strong>] Screenshot du résultat du <code>docker run</code> et le résultat du <code>curl localhost:8080/rest/ping</code></p>
+</li>
+<li>
+<p>[<strong>Challenge 1.1.3</strong>] Screenshot du résultat du <code>curl localhost:8080/rest/ping</code> affichant <code>DIOD</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exercice2"><a class="anchor" href="#exercice2"></a>Pousser vers une registry [<strong>Challenge 1.2</strong>] <em>Advanced</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pour ce challenge vous allez devoir pousser votre image de container dans une registry. Pour cela, vous pouvez vous créer un compte sur <a href="https://quay.io/" class="bare">https://quay.io/</a>
+Par défaut, les images possées vers quay.io sont privées : pour la deuxième partie du challenge, l&#8217;image devra être rendue publique.</p>
+</div>
+<div class="sect2">
+<h3 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 1.2.1</strong>] Screenshot de votre repo quay.io où l&#8217;on voit l&#8217;image de container.</p>
+</li>
+<li>
+<p>[<strong>Challenge 1.2.2</strong>] Screenshot de votre repo quay.io où l&#8217;on voit la visibilité de l&#8217;image.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
