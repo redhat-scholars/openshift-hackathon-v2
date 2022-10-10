@@ -94,13 +94,21 @@
 <div class="sect1">
 <h2 id="_les_containers"><a class="anchor" href="#_les_containers"></a>Les containers</h2>
 <div class="sectionbody">
+<hr>
 <div class="paragraph">
-<p>Le premier challenge ca consister à containeriser une application.
+<p>Avant toute chose, assurez-vous d&#8217;avoir installé quelques outils de développement :
+  - OpenJDK : environnement Java de dévelopement
+  - Maven : outil de construction des applications Java
+  - Docker ou Podman : outil qui va nous permettre de construire et exécuter des conteneurs
+<strong>*</strong></p>
+</div>
+<div class="paragraph">
+<p>Le premier challenge va consister à containeriser une application.
 L&#8217;application à containeriser se trouve ici : <a href="https://gitlab.com/redhat-scholars/antennas-front" class="bare">https://gitlab.com/redhat-scholars/antennas-front</a></p>
 </div>
 <div class="paragraph">
-<p>Pensez bien à bien forker ce dépot ! Vous allez travailler sur cette application pendant les 2 prochaines journées.
-Pensez bien à packager votre application avant de commencer à la containeriser. (<code>mvn clean package</code>)</p>
+<p>Pensez bien à bien forker ce dépôt ! Vous allez travailler sur cette application pendant les 2 prochaines journées.
+N&#8217;oubliez pas de packager votre application avant de commencer à la conteneuriser. Vous pouvez utiliser la commande Maven <code>mvn clean package</code>.</p>
 </div>
 </div>
 </div>
@@ -108,7 +116,7 @@ Pensez bien à packager votre application avant de commencer à la containeriser
 <h2 id="exercice1"><a class="anchor" href="#exercice1"></a>Containeriser votre app [<strong>Challenge 1.1</strong>] <em>Beginner</em></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Pour ce premier challenge, vous allez utiliser Docker et un DockerFile pour créer votre image de container.
+<p>Pour ce premier challenge, vous allez utiliser Docker et un Dockerfile pour créer votre image de container.
 Vous pouvez créer votre Dockerfile mais regardez le repo forké, il y a peut-être un Dockerfile déjà présent ;)</p>
 </div>
 <div class="paragraph">
