@@ -149,6 +149,9 @@ stringData:
 </div>
 </div>
 <div class="paragraph">
+<p>Le runner devra être déployé dans le namespace <strong>"diod"</strong>.</p>
+</div>
+<div class="paragraph">
 <p>Une fois installé le Gitlab runner vous allez devoir créer un pipeline (gitlab-ci.yml) pour builder l&#8217;application et le pousser vers Openshift (qui va s&#8217;occuper de containeriser l&#8217;application et faire un déploiement 'rolling').
 Il y a un gitlab-ci.yml déjà present dans le repo pour vous mettre en route, mais n’hésitez pas de le modifier.  Le meilleur gitlab-ci.yml gagnera peut-être quelques points bonus :)
 Les jobs auront besoin des droits corrects pour pouvoir manipuler votre projet Openshift.  Voici un exemple de comment configurer le RBAC si votre runner tourne dans le même projet (diod) que l&#8217;application:</p>
@@ -172,7 +175,7 @@ clusterrole.rbac.authorization.k8s.io/edit added: "system:serviceaccount:diod:de
 <p>[<strong>Challenge 2.2.3</strong>] L&#8217;URL de votre repo Gitlab qui contient le pipeline (qui a bien évidemment réussi)</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.5</strong>] Screenshot des resources k8s générées</p>
+<p>[<strong>Challenge 2.2.4</strong>] Screenshot des resources k8s générées</p>
 </li>
 </ul>
 </div>
