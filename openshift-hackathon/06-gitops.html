@@ -4,9 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Untitled :: Openshift Hackathon</title>
-    <link rel="canonical" href="https://redhat-scholars.github.io/openshift-hackathon-v2/openshift-hackathon/03-helm_services.html">
-    <link rel="prev" href="02-openshift.html">
-    <link rel="next" href="04-observability.html">
+    <link rel="canonical" href="https://redhat-scholars.github.io/openshift-hackathon-v2/openshift-hackathon/06-gitops.html">
+    <link rel="prev" href="05-resilience.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -57,7 +56,7 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="03-helm_services.html">3. Challenge 3 - Helm et Services</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -66,7 +65,7 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="05-resilience.html">5. Challenge 5 - Résilience et scalabilité</a>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="06-gitops.html">6. Challenge 6 - GitOps</a>
   </li>
 </ul>
@@ -84,71 +83,41 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">Openshift Hackathon</a></li>
-    <li><a href="03-helm_services.html">3. Challenge 3 - Helm et Services</a></li>
+    <li><a href="06-gitops.html">6. Challenge 6 - GitOps</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/openshift-hackathon-v2/edit/master/documentation/modules/ROOT/pages/03-helm_services.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/openshift-hackathon-v2/edit/master/documentation/modules/ROOT/pages/06-gitops.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
 <div class="sect1">
-<h2 id="_helm_et_service"><a class="anchor" href="#_helm_et_service"></a>Helm Et Service</h2>
+<h2 id="_gitops"><a class="anchor" href="#_gitops"></a>GitOps</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Pour ce challenge, nous allons utiliser Helm pour déployer des ressources sur notre cluster.</p>
-</div>
 <div class="sect2">
-<h3 id="_déployer_une_base_mariadb_avec_un_chart_helm_challenge_3_1_beginner"><a class="anchor" href="#_déployer_une_base_mariadb_avec_un_chart_helm_challenge_3_1_beginner"></a>Déployer une base MariaDB avec un chart Helm [<strong>Challenge 3.1</strong>] <em>Beginner</em></h3>
-<div class="paragraph">
-<p>Nous allons donc déployer une base MariaDB avec un chart Helm.
-Vous pouvez utiliser le chart Helm mariadb disponible dans le repo : <a href="https://gitlab.com/redhat-scholars/helm-charts" class="bare">https://gitlab.com/redhat-scholars/helm-charts</a> ou ajouter le repo helm avec la commande</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">helm repo add redhat-scholars-charts https://gitlab.com/api/v4/projects/39850850/packages/helm/stable</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>N&#8217;oubliez pas d&#8217;ajouter les valeurs pour créer l&#8217;utilisateur et la base pour que le déploiement fonctionne ;-)</p>
-</div>
+<h3 id="_challenge_7_1_beginner"><a class="anchor" href="#_challenge_7_1_beginner"></a>[<strong>Challenge 7.1</strong>]  <em>Beginner</em></h3>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>[<strong>Challenge 3.1.1</strong>] Output de la commande Helm</p>
-</li>
-<li>
-<p>[<strong>Challenge 3.1.2</strong>] Screenshot de la base déployée</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>*</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_challenge_3_2_advanced"><a class="anchor" href="#_challenge_3_2_advanced"></a>[<strong>Challenge 3.2</strong>] <em>Advanced</em></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>[<strong>Challenge 3.2.1</strong>]</p>
-</li>
-<li>
-<p>[<strong>Challenge 3.2.2</strong>]</p>
-</li>
-</ul>
-</div>
+<h3 id="_challenge_7_2_advanced"><a class="anchor" href="#_challenge_7_2_advanced"></a>[<strong>Challenge 7.2</strong>] <em>Advanced</em></h3>
 <div class="sect3">
 <h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
 <div class="paragraph">
 <p>*</p>
+</div>
+<div class="paragraph">
+<p>Bravo !</p>
 </div>
 </div>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a></span>
-  <span class="next"><a href="04-observability.html">4. Challenge 4 - Observabilité</a></span>
+  <span class="prev"><a href="05-resilience.html">5. Challenge 5 - Résilience et scalabilité</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
