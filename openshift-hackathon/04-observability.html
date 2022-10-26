@@ -94,13 +94,69 @@
 <div class="sect1">
 <h2 id="_observabilité"><a class="anchor" href="#_observabilité"></a>Observabilité</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Une fois déployé, on aura besoin d&#8217;un aperçu de ce qui se passe avec notre application et le cluster afin que nous puissions intervenir et ajuster notre application et configuration en fonction des besoins du monde "réel"</p>
+</div>
 <div class="sect2">
 <h3 id="_challenge_4_1_beginner"><a class="anchor" href="#_challenge_4_1_beginner"></a>[<strong>Challenge 4.1</strong>] <em>Beginner</em></h3>
-
+<div class="paragraph">
+<p>Il est tres important de pouvoir observer ce qui ce passe dans le cluster. Que ce soit pour voir si une application utilise trop de ressources, ou être alerté en cas de charge inhabituelle, etc.  Vous allez découvrir que Openshift a par défaut deja pas mal de façons d&#8217;observer le cluster/les workloads/les projets etc.  Pour ce challenge vous allez devoir trouver des dashboards avec les suivants metrics:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Memory Usage</strong> du déploiement "antennas-front" [dans la vue Topology]</p>
+</li>
+<li>
+<p><strong>CPU Usage</strong> du déploiement "antennas-incident" dans les dernières 5 minutes  [dans la vue Developer &gt; Observe]</p>
+</li>
+<li>
+<p><strong>CPU Quota</strong> de tous les projets du cluster [dans la vue Administrator &gt; Observe ]</p>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 4.1.1</strong>] Screenshots (3) des observations</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_challenge_4_2_advanced"><a class="anchor" href="#_challenge_4_2_advanced"></a>[<strong>Challenge 4.2</strong>] <em>Advanced</em></h3>
-
+<div class="paragraph">
+<p>On va jouer un peu avec les "requests" et "limits" de notre déploiement antennas-front et observer comment vous pouvez apercevoir qu&#8217;est-ce qui se passe si on ne donne pas assez de resources a nos applications.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Rajoutez des limits et request au deploiement 'antennas-front':</p>
+<div class="ulist">
+<ul>
+<li>
+<p>CPU Requests: 50 millicores</p>
+</li>
+<li>
+<p>CPU Limits: 100 millicores</p>
+</li>
+<li>
+<p>Memory Requests: 50 Mi</p>
+</li>
+<li>
+<p>Memory Limits: 100 Mi</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Observer le déploiement.  Cherchez pourquoi l&#8217;application "tombe en panne".  A vous de nous le dire, et pourquoi :)  Et de nous expliquer la difference entre "requests" et "limits"</p>
+</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
