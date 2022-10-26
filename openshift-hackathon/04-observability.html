@@ -100,7 +100,7 @@
 <div class="sect2">
 <h3 id="_challenge_4_1_beginner"><a class="anchor" href="#_challenge_4_1_beginner"></a>[<strong>Challenge 4.1</strong>] <em>Beginner</em></h3>
 <div class="paragraph">
-<p>Il est tres important de pouvoir observer ce qui ce passe dans le cluster. Que ce soit pour voir si une application utilise trop de ressources, ou être alerté en cas de charge inhabituelle, etc.  Vous allez découvrir que Openshift a par défaut deja pas mal de façons d&#8217;observer le cluster/les workloads/les projets etc.  Pour ce challenge vous allez devoir trouver des dashboards avec les suivants metrics:</p>
+<p>Il est tres important de pouvoir observer ce qui ce passe dans le cluster. Que ce soit pour voir si une application utilise trop de ressources, ou être alerté en cas de charge inhabituelle, etc.  Vous allez découvrir que Openshift a par défaut deja pas mal de façons d&#8217;observer le cluster/les workloads/les projets etc.  Pour ce challenge vous allez devoir trouver des dashboards avec les suivants métriques:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -134,7 +134,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Rajoutez des limits et request au deploiement 'antennas-front':</p>
+<p>Rajoutez des limits et request au déploiement 'antennas-front'. Bien sur en modifiant votre repo et redéployant avec Gitlab CI/CD</p>
 <div class="ulist">
 <ul>
 <li>
@@ -155,7 +155,29 @@
 <li>
 <p>Observer le déploiement.  Cherchez pourquoi l&#8217;application "tombe en panne".  A vous de nous le dire, et pourquoi :)  Et de nous expliquer la difference entre "requests" et "limits"</p>
 </li>
+<li>
+<p>Ajuster les limites/requests de façon que l&#8217;application fonctionne mais sans utiliser trop de ressources.</p>
+</li>
 </ol>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 4.2.1</strong>] Screenshots du yaml du déploiement</p>
+</li>
+<li>
+<p>[<strong>Challenge 4.2.1</strong>] Envoyer nous les  nouvelles valeurs pour les limites et requêtes avec la raison pour lequel vous avez choisis ces valeurs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bonus_challenge"><a class="anchor" href="#_bonus_challenge"></a>BONUS challenge</h3>
+<div class="paragraph">
+<p>Avec Quarkus c&#8217;est assez facile de rajouter des fonctionnalités qui peuvent être utile dans des déploiements Kubernetes.  Essayez de rajouter l&#8217;extension Quarkus qui s&#8217;appelle 'micrometer' pour intégrer des métriques Java dans l’observabilité de Openshift.   Voici un lien pour commencer: <a href="https://quarkus.io/blog/micrometer-prometheus-openshift/" class="bare">https://quarkus.io/blog/micrometer-prometheus-openshift/</a></p>
 </div>
 </div>
 </div>
