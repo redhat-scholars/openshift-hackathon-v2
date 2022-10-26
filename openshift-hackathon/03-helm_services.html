@@ -95,52 +95,57 @@
 <h2 id="_helm_et_service"><a class="anchor" href="#_helm_et_service"></a>Helm Et Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Pour ce challenge, nous allons utiliser Helm pour déployer des ressources sur notre cluster.</p>
+<p>Maintenant que nous avons déployé notre application, nous allons la modifier pour que le frontend et le backend soit séparé afin d&#8217;avoir une architecture micro-services.
+Nous allons déployer le backend en utilisant <code>Helm</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_déployer_une_base_mariadb_avec_un_chart_helm_challenge_3_1_beginner"><a class="anchor" href="#_déployer_une_base_mariadb_avec_un_chart_helm_challenge_3_1_beginner"></a>Déployer une base MariaDB avec un chart Helm [<strong>Challenge 3.1</strong>] <em>Beginner</em></h3>
+<h3 id="exercice1"><a class="anchor" href="#exercice1"></a>Convertir un Template OpenShift en Chart Helm et le déployer [<strong>Challenge 3.1</strong>] <em>Beginner</em></h3>
 <div class="paragraph">
-<p>Nous allons donc déployer une base MariaDB avec un chart Helm.
-Vous pouvez utiliser le chart Helm mariadb disponible dans le repo : <a href="https://gitlab.com/redhat-scholars/helm-charts" class="bare">https://gitlab.com/redhat-scholars/helm-charts</a> ou ajouter le repo helm avec la commande</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">helm repo add redhat-scholars-charts https://gitlab.com/api/v4/projects/39850850/packages/helm/stable</code></pre>
-</div>
+<p>Notre équipe de développement a créé le micro-service <code>antennas-incident</code> et nous a mis à diposition un template OpenShift pour le déployer : <a href="https://gist.github.com/slallemand/dd8ffa0d7faeff3c247ed316812393db" class="bare">https://gist.github.com/slallemand/dd8ffa0d7faeff3c247ed316812393db</a> .
+Cependant, nous voudrions déployer ce service en utilisant <code>Helm</code> et pour ce faire, nous allons utiliser un outil de conversion des templates OpenShift en chart <code>Helm</code> (Vous pouvez récupérer cet outil ici : <a href="https://github.com/redhat-cop/template2helm/releases" class="bare">https://github.com/redhat-cop/template2helm/releases</a>).</p>
 </div>
 <div class="paragraph">
-<p>N&#8217;oubliez pas d&#8217;ajouter les valeurs pour créer l&#8217;utilisateur et la base pour que le déploiement fonctionne ;-)</p>
+<p>Tips: <code>antennas-incident</code> est un micro service servant une API REST ; cette API est protégée par un secret qu&#8217;il faudra changer lors du déploiement par <code>helm</code> ;)</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>[<strong>Challenge 3.1.1</strong>] Output de la commande Helm</p>
+<p>[<strong>Challenge 3.1.1</strong>] Output de la commande <code>helm2template</code></p>
 </li>
 <li>
-<p>[<strong>Challenge 3.1.2</strong>] Screenshot de la base déployée</p>
+<p>[<strong>Challenge 3.1.2</strong>] Output de la commande <code>helm</code> qui aura déployé le micro-service <code>antennas-incident</code> ainsi que le screenshot montrant les ressources déployées dans OpenShift.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_challenge_3_2_advanced"><a class="anchor" href="#_challenge_3_2_advanced"></a>[<strong>Challenge 3.2</strong>] <em>Advanced</em></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>[<strong>Challenge 3.2.1</strong>]</p>
-</li>
-<li>
-<p>[<strong>Challenge 3.2.2</strong>]</p>
-</li>
-</ul>
+<h3 id="exercice2"><a class="anchor" href="#exercice2"></a>Modification du front pour utiliser notre nouveau service [<strong>Challenge 3.2</strong>] <em>Advanced</em></h3>
+<div class="paragraph">
+<p>Nous allons déployer une nouvelle version de notre front avec l&#8217;image <code>quay.io/rh_ee_slallema/antennas-front-jvm:remote-client</code>.
+Cette nouvelle version de l&#8217;image basée sur la branche <code>remote-client</code> va nous permettre d&#8217;utiliser notre nouveau micro-service.
+Une fois déployée cette nouvelle version du front, nous pourrons modifier sa configuration pour utiliser le micro-service <code>antennas-incident</code>.
+Il vous faudra ajouter 2 variables d&#8217;environnements <code>INCIDENT_URL</code> et <code>APIKEY</code> contenant respectivement l&#8217;url du service <code>antennas-incident</code> et le secret nous permettant d&#8217;accéder à l&#8217;API.</p>
+</div>
+<div class="paragraph">
+<p>BONUS : vous pouvez déployer cette nouvelle version comme vous l&#8217;entendez mais vous aurez des points bonus si vous créez un chart helm pour déployer le front ;-)</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
-<div class="paragraph">
-<p>*</p>
+<div class="ulist">
+<ul>
+<li>
+<p>[<strong>Challenge 3.2.1</strong>] Screenshot du déploiement de la nouvelle version du front</p>
+</li>
+<li>
+<p>[<strong>Challenge 3.2.2</strong>] Screenshot des variables d&#8217;environnements de ce nouveau déploiment</p>
+</li>
+<li>
+<p>[<strong>Challenge 3.2.3</strong>] BONUS : l&#8217;url du repo git ou vous aurez pousser votre chart Helm pour le front</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
