@@ -96,24 +96,507 @@
 <div class="sect1">
 <h2 id="_gitops"><a class="anchor" href="#_gitops"></a>GitOps</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Bienvenue pour ce dernier défi et non des moindres !
+En effet, dans ce défi vous aurez pour tâche de mettre en place l&#8217;automatisation nécessaire pour déployer l&#8217;application via des processus GitOps.</p>
+</div>
+<div class="paragraph">
+<p>Entre temps, l&#8217;application que vous avez manipulé a un peu évolué :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>antennas-front</strong> fait maintenant des appels API (REST) à un composant <strong>antennas-incident</strong>.</p>
+</li>
+<li>
+<p><strong>antennas-incident</strong> s&#8217;appuie sur une base de données MariaDB pour stocker ses données.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Un troisième entrepôt Git fait son apparition, <strong>antennas-gitops</strong>, pour stocker les manifestes Kubernetes à déployer.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/gitops.png" alt="gitops">
+</div>
+<div class="title">Figure 1. Processus GitOps</div>
+</div>
+<div class="paragraph">
+<p>Le pipeline CI/CD que nous allons mettre en oeuvre ira construire l&#8217;application et son image de conteneur.
+Il déploiera l&#8217;application dans un environnement de test pour y dérouler des tests d&#8217;intégration.
+Ensuite, si ces tests sont concluants, il mettra à jour les manifests Kubernetes avec la nouvelle image de conteneur et créera une <em>Merge Request</em> sur Gitlab.</p>
+</div>
+<div class="paragraph">
+<p>Une fois cette <em>Merge Request</em> fusionnée dans la branche principale, <strong>OpenShift GitOps</strong> ira appliquer ces changements dans l&#8217;environnement de production.</p>
+</div>
+<div class="sect2">
+<h3 id="_préparatifs"><a class="anchor" href="#_préparatifs"></a>Préparatifs</h3>
+<div class="paragraph">
+<p>Faites une copie de votre entrepôt Git <strong>antennas-front</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur la page d&#8217;accueil de <a href="https://gitlab.com">Gitlab</a></p>
+</li>
+<li>
+<p>Cliquez sur l&#8217;entrepôt <strong>antennas-front</strong></p>
+</li>
+<li>
+<p>Naviguez dans <strong>Paramètres</strong> &gt; <strong>Général</strong></p>
+</li>
+<li>
+<p>Changez le nom du projet en <strong>antennas-front-backup</strong></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Enregistrez les modifications</strong></p>
+</li>
+<li>
+<p>Dépliez la section <strong>Advanced</strong></p>
+</li>
+<li>
+<p>Descendez jusqu&#8217;à la section <strong>Changer le chemin</strong></p>
+</li>
+<li>
+<p>Changez le chemin en <strong>antennas-front-backup</strong></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Changer le chemin</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Divergez les entrepôts suivants : <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a> et <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur l&#8217;entrepôt <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Créer une divergence</strong></p>
+</li>
+<li>
+<p>Allez sur l&#8217;entrepôt <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Créer une divergence</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Créez trois projets dans OpenShift, correspondant aux environnements de développement, test et production.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc new-project antennas-dev
+oc new-project antennas-test
+oc new-project antennas-prod</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+L&#8217;opérateur GitLab Runner a un bug (corrigé chez GitLab mais pas encore livré) qui va nous gêner dans ce défi. Pour cela, vous devrez désinstaller l&#8217;opérateur GitLab Runner que vous avez installé dans le défi numéro 2 et installer une version béta.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Désinstaller l&#8217;opérateur GitLab Runner.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Dans la console OpenShift, allez dans la vue <strong>Administrator</strong></p>
+</li>
+<li>
+<p>Dépliez <strong>Operators</strong> &gt; <strong>Installed Operators</strong></p>
+</li>
+<li>
+<p>En face de la ligne <strong>Gitlab Runner</strong>, cliquez sur les trois petits points et sélectionnez <strong>Uninstall Operator</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Installez l&#8217;opérateur GitLab Runner en version béta.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ajoutez un catalogue à la <em>marketplace</em> OpenShift</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: gitlab-runner-catalog
+  namespace: openshift-marketplace
+spec:
+  sourceType: grpc
+  image: registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator-catalog-source:amd64-v0.0.1-53d8a4e6
+  displayName: GitLab Runner Operators
+  publisher: GitLab Community (Beta)</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Déployez la version béta de l&#8217;opérateur GitLab Runner</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: gitlab-runner-operator
+  namespace: openshift-operators
+spec:
+  channel: stable
+  name: gitlab-runner-operator
+  source: gitlab-runner-catalog
+  sourceNamespace: openshift-marketplace</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Déployez un runner dans le projet <strong>antennas-dev</strong> (même procédure que dans le défi numéro 2).</p>
+</div>
+<div class="paragraph">
+<p>Donnez le droit à votre runner d&#8217;exécuter des conteneurs sous n&#8217;importe quel utilisateur et donnez lui également le droit d&#8217;administration sur l&#8217;environnement de test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc adm policy add-role-to-user admin system:serviceaccount:antennas-dev:default -n antennas-test
+oc adm policy add-scc-to-user anyuid -z default -n antennas-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Maintenant, nous allons configurer notre pipeline CI/CD pour qu&#8217;il puisse écrire dans l&#8217;entrepôt <strong>antennas-gitops</strong> et pousser les images de conteneur dans quay.io.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur votre <a href="https://gitlab.com/-/profile/personal_access_tokens">profil GitLab</a></p>
+</li>
+<li>
+<p>Créez un <em>Personal Access Token</em> avec la portée <strong>api</strong>, <strong>read_api</strong>, <strong>read_user</strong>, <strong>read_repository</strong> et <strong>write_repository</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+notez soigneusement le jeton généré !
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur <a href="https://quay.io/">quay.io</a></p>
+</li>
+<li>
+<p>Cliquez sur votre nom</p>
+</li>
+<li>
+<p>Ouvrez <strong>Account Settings</strong></p>
+</li>
+<li>
+<p>Générez un mot de passe chiffré (<em>Encrypted Password</em>)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+notez soigneusement le mot de passe généré ainsi que votre identifiant (champ <strong>Username</strong> sur la même page) !
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur l&#8217;entrepôt <strong>antennas-front</strong> dans <a href="https://gitlab.com">Gitlab</a></p>
+</li>
+<li>
+<p>Ouvrez <strong>Paramètres</strong> &gt; <strong>Intégration et livraison continues</strong></p>
+</li>
+<li>
+<p>Dépliez la section <strong>Variables</strong></p>
+</li>
+<li>
+<p>Créez trois variables :</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>GITLAB_TOKEN</strong> qui contient le <em>Personal Access Token</em> Gitlab</p>
+</li>
+<li>
+<p><strong>QUAY_PASSWORD</strong> qui contient votre <em>Encrypted Password</em> Quay.io</p>
+</li>
+<li>
+<p><strong>QUAY_USERNAME</strong> qui contient votre identifiant Quay.io</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Les variables <strong>GITLAB_TOKEN</strong> et <strong>QUAY_PASSWORD</strong> doivent être masquées (<em>Masked</em>) !
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Éditez les fichier <strong>.gitlab-ci.yaml</strong> de l&#8217;entrepôt <strong>antennas-front</strong> et ajustez les lignes suivantes à votre configuration.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">#
+# HEADS UP ! You will need to change those variables to match the location of
+# your Quay.io repository and GitLab git repository.
+#
+variables:
+  ANTENNAS_FRONT_IMAGE: quay.io/nmasse_itix/antennas-front
+  ANTENNAS_GITOPS_REPOSITORY: gitlab.com/nmasse-itix/antennas-gitops.git
+  BOT_EMAIL: nicolas.masse@itix.fr</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ANTENNAS_FRONT_IMAGE</strong> est l&#8217;entrepôt quay.io que vous avez créé lors du premier défi</p>
+</li>
+<li>
+<p><strong>ANTENNAS_GITOPS_REPOSITORY</strong> est l&#8217;entrepôt <strong>antennas-gitops</strong> que vous avez copié précédemment</p>
+</li>
+<li>
+<p><strong>BOT_EMAIL</strong> est l&#8217;adresse email rattachée à votre compte Gitlab</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A cette étape, le pipeline CI/CD doit se terminer sans erreur.
+Si ce n&#8217;est pas le cas, revérifiez les étapes ci-dessus et appelez un facilitateur !</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Le pipeline déploie l&#8217;application dans l&#8217;environnement de test mais pas encore dans l&#8217;environnement de production car c&#8217;est tout l&#8217;objet du défi suivant !
+      En attendant, vous pouvez déjà observer les <em>Merge Requests</em> arriver dans l&#8217;entrepôt <strong>antennas-gitops</strong>.
+</td>
+</tr>
+</table>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_challenge_6_1_beginner"><a class="anchor" href="#_challenge_6_1_beginner"></a>[<strong>Challenge 6.1</strong>]  <em>Beginner</em></h3>
+<div class="paragraph">
+<p>Dans ce défi, votre tâche est de compléter le processus GitOps pour que lorsque la <em>Merge Request</em> (entrepôt <strong>antennas-gitops</strong>) créée par pipeline Gitlab CI est fusionnée, les changements sont appliqués à l&#8217;environnement de production (projet <strong>antennas-prod</strong>).</p>
+</div>
+<div class="paragraph">
+<p>Il vous faudra :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Installer l&#8217;opérateur <strong>OpenShift GitOps</strong></p>
+</li>
+<li>
+<p>Ajouter un <em>Webhook</em> à l&#8217;entrepôt <strong>antennas-gitops</strong> pour qu&#8217;un commit/merge déclenche un déploiement.</p>
+</li>
+<li>
+<p>Créer une <strong>Application</strong> ArgoCD</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ah, et n&#8217;oubliez pas de configurer votre application ArgoCD pour que les manifestes déployés utilisent votre entrepôt quay.io !</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Astuces en vrac</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La commande suivante vous retournera l&#8217;URL du webhook ArgoCD</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc get route -n openshift-gitops openshift-gitops-server -o jsonpath='https://{.spec.host}/api/webhook'</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Le pipeline Gitlab CI met 5 minutes à s&#8217;exécuter. Vous pouvez le court-circuiter durant la phase de mise au point en éditant directement les fichiers dans l&#8217;entrepôt <strong>antennas-gitops</strong>.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Pour vous aider, vous pouvez vous appuyer sur la documentation suivante.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.11/cicd/gitops/installing-openshift-gitops.html">Installing OpenShift GitOps</a></p>
+</li>
+<li>
+<p><a href="https://argo-cd.readthedocs.io/en/stable/user-guide/helm/">ArgoCD - Helm</a></p>
+</li>
+</ul>
+</div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
-<div class="paragraph">
-<p>*</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Capture d&#8217;écran du Webhook configuré avec les évènements récents en statut <strong>200</strong></p>
+</li>
+<li>
+<p>Capture d&#8217;écran de la console ArgoCD montrant votre application synchronisée et fonctionnelle</p>
+</li>
+<li>
+<p>Capture d&#8217;écran du champ <strong>image</strong> du déploiement <strong>antennas-front</strong> dans la console ArgoCD</p>
+</li>
+<li>
+<p>Votre application ArgoCD au format YAML</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_challenge_6_2_advanced"><a class="anchor" href="#_challenge_6_2_advanced"></a>[<strong>Challenge 6.2</strong>] <em>Advanced</em></h3>
-<div class="sect3">
-<h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
 <div class="paragraph">
-<p>*</p>
+<p>Dans ce défi, vous devrez améliorer le contenu de l&#8217;entrepôt <strong>antennas-gitops</strong> pour réaliser une livraison applicative au format <em>Blue/Green</em>.</p>
 </div>
 <div class="paragraph">
-<p>Bravo !</p>
+<p>Le principe est le suivant :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>L&#8217;application est déployée deux fois, une première fois avec une étiquette <strong>bleue</strong> et une seconde fois avec une étiquette <strong>verte</strong>.</p>
+</li>
+<li>
+<p>Lors de la première livraison applicative, tout le trafic est dirigé vers l&#8217;application <strong>bleue</strong>.</p>
+</li>
+<li>
+<p>Lors de la livraison suivante, les artefacts sont déployées sur l&#8217;application <strong>verte</strong> car elle ne reçoit pas de trafic.</p>
+</li>
+<li>
+<p>Si les tests de mise en production sont satisfaisants, on bascule le trafic vers l&#8217;instance <strong>verte</strong>.</p>
+</li>
+<li>
+<p>À la livraison suivante, c&#8217;est l&#8217;inverse : c&#8217;est l&#8217;instance <strong>bleue</strong> qui sera mise à jour. Et ainsi de suite&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Dans la branche <strong>gitops</strong> de l&#8217;entrepôt <strong>antennas-front</strong> vous avez un pipeline Gitlab CI adapté à ce type de livraison.
+Observez bien son fonctionnement ainsi que les différences avec celui de la branche <strong>main</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Dans la branche <strong>gitops</strong> de l&#8217;entrepôt <strong>antennas-gitops</strong> vous avez un <em>Chart Helm</em> mis à jour avec deux instances de l&#8217;application, une verte et une bleue.</p>
+</div>
+<div class="paragraph">
+<p>Votre tâche sera de trouver un moyen de faire la bascule <strong>vert</strong> / <strong>bleu</strong>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Astuces en vrac</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Le pipeline Gitlab CI met à jour le fichier <strong>values-prod.yaml</strong> dans l&#8217;entrepôt <strong>antennas-gitops</strong> avec la cible active (deux valeurs possibles: <strong>blue</strong> et <strong>green</strong>). À vous d&#8217;utiliser cette valeur dans le <em>Chart Helm</em> pour créer l&#8217;objet Kubernetes qui vous permettra de faire la bascule.</p>
+</li>
+<li>
+<p>Le pipeline Gitlab CI met 5 minutes à s&#8217;exécuter. Vous pouvez le court-circuiter durant la phase de mise au point en éditant directement les fichiers dans l&#8217;entrepôt <strong>antennas-gitops</strong>.</p>
+</li>
+<li>
+<p>N&#8217;oubliez pas de mettre à jour votre <strong>Application</strong> ArgoCD avec la bonne branche Git (<strong>blue-green</strong>) et les bons paramètres <em>Helm</em> !</p>
+</li>
+<li>
+<p>Pensez à passer la branche <strong>blue-green</strong> de votre entrepôt <strong>antennas-front</strong> en <em>Protected</em> pour qu&#8217;elle puisse accéder aux variables CI/CD !</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Pour vous aider, vous pouvez vous appuyer sur la documentation suivante.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.11/applications/deployments/route-based-deployment-strategies.html">Using route-based deployment strategies</a></p>
+</li>
+<li>
+<p><a href="https://helm.sh/docs/topics/charts/">Helm Charts</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Capture d&#8217;écran de l&#8217;objet Kubernetes qui vous a servi à la bascule, une fois en vert, une fois en bleu.</p>
+</li>
+<li>
+<p>Capture d&#8217;écran de votre pipeline Gitlab CI terminé avec succès</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
