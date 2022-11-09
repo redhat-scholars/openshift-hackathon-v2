@@ -95,7 +95,7 @@
   <div class="content">
 <article class="doc">
 <div class="sect1">
-<h2 id="_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"><a class="anchor" href="#_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"></a>Déployer votre image de container sur Openshift avec Gitlab CI/CD</h2>
+<h2 id="_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"><a class="anchor" href="#_déployer_votre_image_de_container_sur_openshift_avec_gitlab_cicd"></a>Déployer votre image de container sur OpenShift avec GitLab CI/CD</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Ce matin vous avez créé votre image de container, il est maintenant temps de la déployer sur votre cluster OpenShift !</p>
@@ -105,7 +105,7 @@
 <div class="paragraph">
 <p>Utilisez la perspective "Developer" de votre console OpenShift pour déployer votre image.
 Vous pouvez utiliser le projet <strong>"default"</strong> pour cette étape.
-Profitez en pour vous familiariser avec les objets OpenShift (POD, Deploymement, Service, Route &#8230;&#8203;).</p>
+Profitez en pour vous familiariser avec les objets OpenShift (POD, Deployment, Service, Route &#8230;&#8203;).</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
@@ -125,14 +125,14 @@ Profitez en pour vous familiariser avec les objets OpenShift (POD, Deploymement,
 </div>
 </div>
 <div class="sect2">
-<h3 id="exercice2"><a class="anchor" href="#exercice2"></a>Déployer l&#8217;application sur Openshift avec Gitlab CI/CD [<strong>Challenge 2.2</strong>]  <em>Advanced</em></h3>
+<h3 id="exercice2"><a class="anchor" href="#exercice2"></a>Déployer l&#8217;application sur OpenShift avec GitLab CI/CD [<strong>Challenge 2.2</strong>]  <em>Advanced</em></h3>
 <div class="paragraph">
 <p>Pour ce challenge, créer le projet <strong>"diod"</strong> sur votre cluster OpenShift.</p>
 </div>
 <div class="paragraph">
-<p>Avant de pouvoir utiliser Gitlab avec Openshift il faut que vous installiez un "Gitlab runner" sur Openshift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.
-N&#8217;oublier pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet Gitlab.
-Pour créer le secret, utiliser le manifest suivant (celui de la documentation étant mal formaté) :</p>
+<p>Avant de pouvoir utiliser GitLab avec OpenShift il faut que vous installiez un "GitLab runner" sur OpenShift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.
+N&#8217;oubliez pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet GitLab.
+Pour créer le secret, utilisez le manifest suivant (celui de la documentation étant mal formaté) :</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -149,9 +149,9 @@ stringData:
 <p>Le runner devra être déployé dans le namespace <strong>"diod"</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Une fois installé le Gitlab runner vous allez devoir créer un pipeline (gitlab-ci.yml) pour builder l&#8217;application et le pousser vers Openshift (qui va s&#8217;occuper de containeriser l&#8217;application et faire un déploiement 'rolling').
-Il y a un gitlab-ci.yml déjà present dans le repo pour vous mettre en route, mais n’hésitez pas de le modifier.  Le meilleur gitlab-ci.yml gagnera peut-être quelques points bonus :)
-Les jobs auront besoin des droits corrects pour pouvoir manipuler votre projet Openshift.  Voici un exemple de comment configurer le RBAC si votre runner tourne dans le même projet (diod) que l&#8217;application:</p>
+<p>Une fois installé le GitLab runner, vous allez devoir créer un pipeline (.gitlab-ci.yml) pour builder l&#8217;application et le pousser vers OpenShift (qui va s&#8217;occuper de containeriser l&#8217;application et faire un déploiement 'rolling').
+Il y a un .gitlab-ci.yml déjà présent dans le repo pour vous mettre en route, mais n’hésitez pas de le modifier.  Le meilleur .gitlab-ci.yml gagnera peut-être quelques points bonus :)
+Les jobs auront besoin des droits corrects pour pouvoir manipuler votre projet OpenShift.  Voici un exemple de comment configurer le RBAC si votre runner tourne dans le même projet (diod) que l&#8217;application:</p>
 </div>
 <div class="paragraph">
 <p><code>oc policy add-role-to-user edit system:serviceaccount:diod:default -n diod
@@ -165,13 +165,13 @@ clusterrole.rbac.authorization.k8s.io/edit added: "system:serviceaccount:diod:de
 <p>[<strong>Challenge 2.2.1</strong>] Screenshot de l&#8217;Operator installé</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.2</strong>] Screenshot de Gitlab CI/CD qui montre le Runner qui tourne sur Openshift s&#8217;est connecté à Gitlab</p>
+<p>[<strong>Challenge 2.2.2</strong>] Screenshot de GitLab CI/CD qui montre le Runner qui tourne sur OpenShift s&#8217;est connecté à GitLab</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.3</strong>] L&#8217;URL de votre repo Gitlab qui contient le pipeline (qui a bien évidemment réussi)</p>
+<p>[<strong>Challenge 2.2.3</strong>] L&#8217;URL de votre repo GitLab qui contient le pipeline (qui a bien évidemment réussi)</p>
 </li>
 <li>
-<p>[<strong>Challenge 2.2.4</strong>] Screenshot des resources k8s générées</p>
+<p>[<strong>Challenge 2.2.4</strong>] Screenshot des ressources k8s générées</p>
 </li>
 </ul>
 </div>

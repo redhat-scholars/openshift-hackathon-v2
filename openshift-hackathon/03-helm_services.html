@@ -98,7 +98,7 @@
 <h2 id="_helm_et_service"><a class="anchor" href="#_helm_et_service"></a>Helm Et Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Maintenant que nous avons déployé notre application, nous allons la modifier pour que le frontend et le backend soit séparé afin d&#8217;avoir une architecture micro-services.
+<p>Maintenant que nous avons déployé notre application, nous allons la modifier pour que le frontend et le backend soient séparés afin d&#8217;avoir une architecture micro-services.
 Nous allons déployer le backend en utilisant <code>Helm</code>.</p>
 </div>
 <div class="sect2">
@@ -130,7 +130,7 @@ Cependant, nous voudrions déployer ce service en utilisant <code>Helm</code> et
 <p>Nous allons déployer une nouvelle version de notre front avec l&#8217;image <code>quay.io/rh_ee_slallema/antennas-front-jvm:remote-client</code>.
 Cette nouvelle version de l&#8217;image basée sur la branche <code>remote-client</code> va nous permettre d&#8217;utiliser notre nouveau micro-service.
 Une fois déployée cette nouvelle version du front, nous pourrons modifier sa configuration pour utiliser le micro-service <code>antennas-incident</code>.
-Il vous faudra ajouter 2 variables d&#8217;environnements <code>INCIDENT_URL</code> et <code>APIKEY</code> contenant respectivement l&#8217;url du service <code>antennas-incident</code> et le secret nous permettant d&#8217;accéder à l&#8217;API.</p>
+Il vous faudra ajouter 2 variables d&#8217;environnement <code>INCIDENT_URL</code> et <code>APIKEY</code> contenant respectivement l&#8217;url du service <code>antennas-incident</code> et le secret nous permettant d&#8217;accéder à l&#8217;API.</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
@@ -140,7 +140,7 @@ Il vous faudra ajouter 2 variables d&#8217;environnements <code>INCIDENT_URL</co
 <p>[<strong>Challenge 3.2.1</strong>] Screenshot du déploiement de la nouvelle version du front + output de la commande <code>helm get all &lt;nom_de_la_release_antennas_incident&gt;</code></p>
 </li>
 <li>
-<p>[<strong>Challenge 3.2.2</strong>] Screenshot des variables d&#8217;environnements de ce nouveau déploiment</p>
+<p>[<strong>Challenge 3.2.2</strong>] Screenshot des variables d&#8217;environnement de ce nouveau déploiement</p>
 </li>
 </ul>
 </div>
@@ -153,7 +153,7 @@ Il vous faudra ajouter 2 variables d&#8217;environnements <code>INCIDENT_URL</co
 <div class="ulist">
 <ul>
 <li>
-<p>[<strong>Challenge 3.3</strong>] <strong>BONUS</strong> : l&#8217;url du repo git ou vous aurez pousser votre chart Helm pour le front</p>
+<p>[<strong>Challenge 3.3</strong>] <strong>BONUS</strong> : l&#8217;url du repo git ou vous aurez poussé votre chart Helm pour le front</p>
 </li>
 </ul>
 </div>
