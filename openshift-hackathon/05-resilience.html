@@ -116,7 +116,8 @@
 <p>Il va falloir mettre à jour les resources K8s afin d&#8217;utiliser ces probes.</p>
 </div>
 <div class="paragraph">
-<p>Ensuite, il faut mettre en place un HPA (Horizontal Pod Autoscaler). Pensez aussi à baisser les ressources disponibles de votre <code>Deployment</code> (Limit et Request), mettez des valeurs assez basses pour faire réagir le HPA.</p>
+<p>Ensuite, il faut mettre en place un HPA (Horizontal Pod Autoscaler).
+Mettez des valeurs assez basses pour faire réagir simplement le HPA.</p>
 </div>
 <div class="paragraph">
 <p>Voici un exemple d&#8217;un HPA :</p>
@@ -138,11 +139,18 @@ spec:
   metrics:
     - type: Resource
       resource:
-        name: memory
+        name: cpu
         target:
           type: AverageValue
-          averageValue: 10Mi</code></pre>
+          averageValue: 15m</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Voilà un exemple de commande permettant de stresser un peu notre backend afin de faire réagir le HPA:
+<code>oc run stresspod --restart=Never  --image registry.access.redhat.com/ubi8/ubi-minimal --command&#8201;&#8212;&#8201;sh -c "while :; do curl 'http://&lt;antennas-incident service name&gt;/rest/incidents?api_key=&lt;votre secret&gt;' ; done"</code></p>
+</div>
+<div class="paragraph">
+<p>Après quelques secondes, vous devriez avoir plusieurs PODs.</p>
 </div>
 <div class="sect3">
 <h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
@@ -155,6 +163,9 @@ spec:
 <p>[<strong>Challenge 5.1.2</strong>] Screenshot de la console faisant apparaître "Autoscaled to &#8230;&#8203;" ou manifest yaml du HPA</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Pensez à supprimer le POD "stresspod" si besoin (<code>oc delete po/stresspod</code>) : après quelques minutes, le HPA devrait réduite le nombre de PODs.</p>
 </div>
 </div>
 </div>
