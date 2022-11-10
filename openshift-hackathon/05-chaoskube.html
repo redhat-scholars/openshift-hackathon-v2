@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Openshift Hackathon</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/openshift-hackathon-v2/openshift-hackathon/05-chaoskube.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/openshift-hackathon-v2">Openshift Hackathon</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="openshift-hackathon" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="00-prerequis.html">0. Pré-requis</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="01-containers.html">1. Challenge 1 - Containers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="02-openshift.html">2. Challenge 2 - OpenShift &amp; CI/CD</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="03-helm_services.html">3. Challenge 3 - Helm et Services</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="04-observability.html">4. Challenge 4 - Observabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="05-resilience.html">5. Challenge 5 - Résilience et scalabilité</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="06-gitops.html">6. Challenge 6 - GitOps</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/openshift-hackathon-v2/edit/master/documentation/modules/ROOT/pages/05-chaoskube.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_challenge_5_2_chaos_kube"><a class="anchor" href="#_challenge_5_2_chaos_kube"></a>[Challenge 5.2] Chaos Kube</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chaos_testing_with_chaoskube"><a class="anchor" href="#_chaos_testing_with_chaoskube"></a>Chaos testing with chaoskube</h3>
+<div class="paragraph">
+<p>Github repository du project: <a href="https://github.com/linki/chaoskube/" class="bare">https://github.com/linki/chaoskube/</a></p>
+</div>
+<div class="sect3">
+<h4 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h4>
+<div class="paragraph">
+<p>Le principe est de mettre en place un outil qui va nous permettre de
+simuler des pannes aléatoires sur un projet afin d’améliorer la
+résistance des applications pour surmonter ces pannes en utilisant des
+fonctionnalités de kubernetes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_installation_de_chaoskube"><a class="anchor" href="#_installation_de_chaoskube"></a>Installation de chaoskube</h4>
+<div class="sect4">
+<h5 id="_préambule"><a class="anchor" href="#_préambule"></a>Préambule</h5>
+<div class="paragraph">
+<p>Sur OpenShift les SCCs (Security Context Constraints) ajoute un niveau
+de sécurité supplémentaire au cluster kubernetes qui n’existe pas sur la
+plupart des versions kubernetes alternatives. Cependant, ce niveau de
+sécurité plus élevé demande parfois un peu d’adaptation pour pouvoir
+deployer des applications qui n’ont pas été testée sur OpenShift. A
+noter, que ça n’est pas réciproque, une application packagée et testée
+pour OpenShift se déploiera généralement sans modifications sur une
+autre distribution kubernetes.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>oc new-project chaoskube
+oc adm policy add-scc-to-user runasanyuid -z chaoskube</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_helm_déploiement"><a class="anchor" href="#_helm_déploiement"></a>Helm déploiement</h5>
+<div class="paragraph">
+<p>Ensuite, procéder à l’installation comme spécifié dans la documentation
+en ométtant de créer le namespace:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>helm repo add chaoskube https://linki.github.io/chaoskube/
+helm install chaoskube chaoskube/chaoskube --atomic --namespace=chaoskube</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vérifier le bon déploiement:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ oc -n chaoskube get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+chaoskube-b88449d95-zfbv7   1/1     Running   0          6s
+
+$ oc -n chaoskube logs -f $(oc -n chaoskube get pods -l app.kubernetes.io/instance=chaoskube -oname)
+...</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_cleanup"><a class="anchor" href="#_cleanup"></a>Cleanup</h5>
+<div class="paragraph">
+<p>Chaoskube devrait être déployé et fonctionnel. Cependant, nous
+souhaitons le paramètrer pour ne cibler que des applications spécifiques
+et à une fréquence différente.</p>
+</div>
+<div class="paragraph">
+<p>Pour consulter les paramètres de configuration disponibles, vous pouvez
+lire la documentation mais également les consulter de la façon suivante:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>oc -n chaoskube exec -ti  $(oc -n chaoskube get pods -l app.kubernetes.io/instance=chaoskube -oname) --  /usr/local/bin/chaoskube --help
+usage: chaoskube [&lt;flags&gt;]
+
+Flags:
+  --help                         Show context-sensitive help (also try --help-long and --help-man).
+  --labels=LABELS                A set of labels to restrict the list of affected pods. Defaults to everything.
+...</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pour supprimer le déploiement de chaoskube:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>helm uninstall chaoskube</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Note</em>: un chart helm peut être ``customizé'' en utilisant un fichier
+values.yaml qui override les paramètres par défaut.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_challenges"><a class="anchor" href="#_challenges"></a>Challenges</h4>
+<div class="sect4">
+<h5 id="_challenge_5_2_1_utilisation_intermédiaire"><a class="anchor" href="#_challenge_5_2_1_utilisation_intermédiaire"></a>[Challenge 5.2.1] Utilisation intermédiaire</h5>
+<div class="paragraph">
+<p>En partant d’un déploiement simple, utiliser chaoskube pour tester la
+résillience de cette application: - cibler exclusivement le namespace de
+l’application - tuer des ressources toutes les 15 secondes</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: chaoskube-test
+  name: chaoskube-test
+  namespace: chaoskube-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chaoskube-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: chaoskube-test
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - sleep INF
+        image: quay.io/xymox/ubi8-debug-toolkit:latest
+        name: ubi8-debug-toolkit
+        resources: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+status: {}</pre>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>déploiement pour augmenter la disponibilité de l’applications*</p>
+</div>
+</blockquote>
+</div>
+<div class="sect5">
+<h6 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>[Challenge 5.2.1.1] logs chaoskube prouvant la destruction de pods
+dans l’intervalle de temps défini</p>
+</li>
+<li>
+<p>[Challenge 5.2.1.2] Ouput des pods applicatifs incluant leur statut et
+leur age demontrant la disponibilité de l’application malgré les
+destructions aléatoires</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_challenge_5_2_2_utilisation_avancée"><a class="anchor" href="#_challenge_5_2_2_utilisation_avancée"></a>[Challenge 5.2.2] Utilisation avancée</h5>
+<div class="paragraph">
+<p>En utilisant le projet antenna-front, configurez chaoskube pour y
+appliquer le chaos testing.</p>
+</div>
+<div class="sect5">
+<h6 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>[Challenge 5.2.2.1] logs chaoskube prouvant la destruction de pods
+dans l’intervalle de temps défini</p>
+</li>
+<li>
+<p>[Challenge 5.2.2.2] Test de l’API (http) pendant 2 minutes affichant
+son taux de disponibilité (script utilisé + résultats)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

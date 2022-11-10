@@ -170,14 +170,12 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="exercice2"><a class="anchor" href="#exercice2"></a>[<strong>Challenge 5.2</strong>] Chaos Kube</h3>
+<h3 id="exercice2"><a class="anchor" href="#exercice2"></a>[<strong>Challenge 5.2</strong>] Chaos Kube <em>Advanced</em></h3>
 <div class="sect3">
-<h4 id="_chaos_testing_with_chaoskube"><a class="anchor" href="#_chaos_testing_with_chaoskube"></a>Chaos testing with chaoskube</h4>
+<h4 id="_chaos_testing_with_chaoskube_introduction"><a class="anchor" href="#_chaos_testing_with_chaoskube_introduction"></a>Chaos testing with chaoskube - Introduction</h4>
 <div class="paragraph">
 <p>GitHub repository du projet: <a href="https://github.com/linki/chaoskube/" class="bare">https://github.com/linki/chaoskube/</a></p>
 </div>
-<div class="sect4">
-<h5 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h5>
 <div class="paragraph">
 <p>Le principe est de mettre en place un outil qui va nous permettre de
 simuler des pannes aléatoires sur un projet afin d’améliorer la
@@ -185,16 +183,27 @@ résistance des applications pour surmonter ces pannes en utilisant des
 fonctionnalités de kubernetes.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_installation_de_chaoskube"><a class="anchor" href="#_installation_de_chaoskube"></a>Installation de chaoskube</h4>
 <div class="sect4">
-<h5 id="_installation_de_chaoskube"><a class="anchor" href="#_installation_de_chaoskube"></a>Installation de chaoskube</h5>
-<div class="sect5">
-<h6 id="_préambule"><a class="anchor" href="#_préambule"></a>Préambule</h6>
+<h5 id="_préambule"><a class="anchor" href="#_préambule"></a>Préambule</h5>
 <div class="paragraph">
-<p>Sur OpenShift les SCCs (Security Context Constraints) ajoute un niveau
-de sécurité supplémentaire au cluster kubernetes qui n’existe pas sur la
-plupart des versions kubernetes alternatives. Cependant, ce niveau de
-sécurité plus élevé demande parfois un peu d’adaptation pour pouvoir
-deployer des applications qui n’ont pas été testées sur OpenShift. À
+<p>OpenShift impose un certain nombre de restrictions liées à la sécurité
+qui n&#8217;exitent pas sur d&#8217;autres environements kubernetes.</p>
+</div>
+<div class="paragraph">
+<p>Par example, sur OpenShift les SCCs (Security Context Constraints) ajoute un niveau
+de sécurité supplémentaire au cluster kubernetes en restreignant les droits alloués
+aux comptes de services en charge de l&#8217;execution des containers.</p>
+</div>
+<div class="paragraph">
+<p>OpenShift fait également attention à assigner des user ids uniques par pod au sein
+d&#8217;un même projet.</p>
+</div>
+<div class="paragraph">
+<p>Cependant, ce niveau de sécurité plus élevé demande parfois de réaliser quelques
+modifications et un peu d’adaptation pour pouvoir
+deployer des applications qui n’ont pas encore été testées sur OpenShift. À
 noter que ça n’est pas réciproque, une application packagée et testée
 pour OpenShift se déploiera généralement sans modification sur une
 autre distribution kubernetes.</p>
@@ -202,12 +211,41 @@ autre distribution kubernetes.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc new-project chaoskube
-oc adm policy add-scc-to-user runasanyuid -z chaoskube</code></pre>
+oc adm policy add-scc-to-user runasanyuid -z chaoskube
+cat &lt;&lt;-EOF &gt; values-override.yaml
+podSecurityContext:
+   runAsUser:
+EOF</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dans le cas présent, on remplace les valeurs de configurations par défaut dans le template helm en créant un fichier values-override.yaml.</p>
 </div>
-<div class="sect5">
-<h6 id="_déploiement_helm"><a class="anchor" href="#_déploiement_helm"></a>Déploiement Helm</h6>
+<div class="paragraph">
+<p>Vous pouvez également attribuer une SCC au compte de service chaoskube (anyuid ou runasanyuid en fonction de la version d&#8217;OpenShift) pour palier à ce problème.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc adm policy add-scc-to-user anyuid -z chaoskube</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ou bien, créer un fork du repository git chaoskube, faire la modification dans votre repository et soumettre une pull request aux développeurs de chaoskube.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_déploiement_helm"><a class="anchor" href="#_déploiement_helm"></a>Déploiement Helm</h5>
 <div class="paragraph">
 <p>Ensuite, procéder à l’installation comme spécifié dans la documentation
 en omettant de créer le namespace:</p>
@@ -215,7 +253,7 @@ en omettant de créer le namespace:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">helm repo add chaoskube https://linki.github.io/chaoskube/
-helm install chaoskube chaoskube/chaoskube --atomic --namespace=chaoskube</code></pre>
+helm install chaoskube chaoskube/chaoskube --atomic --namespace=chaoskube -f ./values-override.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -232,8 +270,8 @@ $ oc -n chaoskube logs -f $(oc -n chaoskube get pods -l app.kubernetes.io/instan
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_cleanup"><a class="anchor" href="#_cleanup"></a>Cleanup</h6>
+<div class="sect4">
+<h5 id="_cleanup"><a class="anchor" href="#_cleanup"></a>Cleanup</h5>
 <div class="paragraph">
 <p>Chaoskube devrait être déployé et fonctionnel. Cependant, nous
 souhaitons le paramétrer pour ne cibler que des applications spécifiques
@@ -264,18 +302,19 @@ Flags:
 </div>
 <div class="paragraph">
 <p><em>Note</em>: un chart helm peut être configuré en utilisant un fichier
-values.yaml qui remplace les paramètres par défaut.</p>
-</div>
+values.yaml ou values-override.yaml (voir le déploiement initial)
+qui remplace les paramètres définis par défaut.</p>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_challenge_5_2_1_chaos_kube_beginner"><a class="anchor" href="#_challenge_5_2_1_chaos_kube_beginner"></a>[<strong>Challenge 5.2.1</strong>] Chaos Kube <em>Beginner</em></h4>
+<h4 id="_exercice"><a class="anchor" href="#_exercice"></a>[<strong>Exercice</strong>]</h4>
 <div class="paragraph">
 <p>En partant d’un déploiement simple, utiliser chaoskube pour tester la
 résilience de cette application:
 * cibler exclusivement le namespace de l’application
-* tuer des ressources toutes les 15 secondes</p>
+* tuer des ressources toutes les 15 secondes
+* s&#8217;assurer que les pods sont bien détruits dans le namespace ciblé</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -328,38 +367,35 @@ Vous pouvez modifier les paramètres de ce descripteur de déploiement pour augm
 </tr>
 </table>
 </div>
-<div class="sect4">
-<h5 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h5>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_2"><a class="anchor" href="#_preuves_à_fournir_2"></a>Preuves à fournir</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>[<strong>Challenge 5.2.1.1</strong>] logs chaoskube prouvant la destruction de pods dans l’intervalle de temps défini</p>
+<p>[<strong>Challenge 5.2.1</strong>] fichier values-override.yaml + extrait des logs chaoskube prouvant la destruction de pods dans l’intervalle de temps défini</p>
 </li>
 <li>
-<p>[<strong>Challenge 5.2.1.2</strong>] Output des pods applicatifs incluant leur statut et leur âge démontrant la disponibilité de l’application malgré les destructions aléatoires</p>
+<p>[<strong>Challenge 5.2.2</strong>] Output des pods applicatifs incluant leur statut et leur âge démontrant la disponibilité de l’application malgré les destructions aléatoires</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_challenge_5_2_2_chaos_kube_advanced"><a class="anchor" href="#_challenge_5_2_2_chaos_kube_advanced"></a>[<strong>Challenge 5.2.2</strong>] Chaos Kube <em>Advanced</em></h4>
+<div class="sect2">
+<h3 id="_bonus_challenge_antenna_front_chaos"><a class="anchor" href="#_bonus_challenge_antenna_front_chaos"></a>BONUS challenge - Antenna Front chaos</h3>
 <div class="paragraph">
 <p>En utilisant le projet antenna-front, configurez chaoskube pour y
 appliquer le chaos testing.</p>
 </div>
-<div class="sect4">
-<h5 id="_preuves_à_fournir_3"><a class="anchor" href="#_preuves_à_fournir_3"></a>Preuves à fournir</h5>
+<div class="sect3">
+<h4 id="_preuves_à_fournir_3"><a class="anchor" href="#_preuves_à_fournir_3"></a>Preuves à fournir</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>[<strong>Challenge 5.2.2.1</strong>] logs chaoskube prouvant la destruction de pods dans l’intervalle de temps défini</p>
-</li>
-<li>
-<p>[<strong>Challenge 5.2.2.2</strong>] Test de l’API (http) pendant 2 minutes affichant son taux de disponibilité (script utilisé + résultats)</p>
+<p>[<strong>Challenge 5.2.3</strong>] logs chaoskube prouvant la destruction de pods dans l’intervalle de temps défini plus évidences du test de l’API (http) pendant 2 minutes affichant son taux de disponibilité (script utilisé + résultats)</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>
