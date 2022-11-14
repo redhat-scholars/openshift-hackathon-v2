@@ -133,11 +133,17 @@ Profitez en pour vous familiariser avec les objets OpenShift (POD, Deployment, S
 <div class="paragraph">
 <p>Avant de pouvoir utiliser GitLab avec OpenShift il faut que vous installiez un "GitLab runner" sur OpenShift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.</p>
 </div>
-<div class="paragraph">
-<p><strong>!! Il y a 2 versions différentes de l&#8217;opérateur (1 certifiée Red Hat et 1 version communautaire) !!</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>!! Nous avons rencontré un problème avec l&#8217;opérateur certifié (en cours de résolution côté Red Hat) donc merci d&#8217;installer l&#8217;opérateur "Communautaire" !!</strong></p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Il y a 2 versions différentes de l&#8217;opérateur (1 certifiée Red Hat et 1 version communautaire). Nous avons rencontré un problème avec l&#8217;opérateur certifié (en cours de résolution côté Red Hat) et il faut donc installer l&#8217;opérateur "Communautaire".
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>N&#8217;oubliez pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet GitLab.
