@@ -114,7 +114,7 @@ En effet, dans ce défi vous aurez pour tâche de mettre en place l&#8217;automa
 </ul>
 </div>
 <div class="paragraph">
-<p>Un troisième entrepôt Git fait son apparition, <strong>antennas-gitops</strong>, pour stocker les manifests Kubernetes à déployer.</p>
+<p>Un troisième dépôt Git fait son apparition, <strong>antennas-gitops</strong>, pour stocker les manifests Kubernetes à déployer.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -133,7 +133,132 @@ Ensuite, si ces tests sont concluants, il mettra à jour les manifests Kubernete
 <div class="sect2">
 <h3 id="_préparatifs"><a class="anchor" href="#_préparatifs"></a>Préparatifs</h3>
 <div class="paragraph">
-<p>Faites une copie de votre entrepôt Git <strong>antennas-front</strong></p>
+<p>Forkez le dépôt suivant : <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allez sur le dépôt <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Créer une divergence</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Créez trois projets dans OpenShift, correspondant aux environnements de développement, test et production.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc new-project antennas-dev
+oc new-project antennas-test
+oc new-project antennas-prod</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_challenge_6_1_beginner"><a class="anchor" href="#_challenge_6_1_beginner"></a>[<strong>Challenge 6.1</strong>]  <em>Beginner</em></h3>
+<div class="paragraph">
+<p>Dans ce défi, votre tâche est de réaliser la toute fin du processus GitOps pour que lors d&#8217;un <em>Commit</em> (dépôt <strong>antennas-gitops</strong>), les changements sont appliqués à l&#8217;environnement de production (projet <strong>antennas-prod</strong>).</p>
+</div>
+<div class="paragraph">
+<p>Il vous faudra :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Installer l&#8217;opérateur <strong>OpenShift GitOps</strong></p>
+</li>
+<li>
+<p>Ajouter un <em>Webhook</em> au dépôt <strong>antennas-gitops</strong> pour qu&#8217;un commit/merge déclenche un déploiement.</p>
+</li>
+<li>
+<p>Créer une <strong>Application</strong> ArgoCD</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ah, et n&#8217;oubliez pas de configurer votre application ArgoCD pour que les manifestes déployés utilisent votre dépôt quay.io !</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Astuces en vrac</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La commande suivante vous retournera l&#8217;URL du webhook ArgoCD</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc get route -n openshift-gitops openshift-gitops-server -o jsonpath='https://{.spec.host}/api/webhook'</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pour simuler la <em>Merge Request</em> qui sera créée par le pipeline CI, poussez un <em>commit</em> dans le dépot <strong>antennas-gitops</strong> altérant le fichier <strong>values-prod.yaml</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>antennas-front:
+  image:
+    repository: "quay.io/&lt;your_username_here&gt;/antennas-front"
+    tag: test1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vous incrémenterez <code>test1</code> à chaque test (pensez à pousser le tag correspondant) !</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Pour vous aider, vous pouvez vous appuyer sur la documentation suivante.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.11/cicd/gitops/installing-openshift-gitops.html">Installing OpenShift GitOps</a></p>
+</li>
+<li>
+<p><a href="https://argo-cd.readthedocs.io/en/stable/user-guide/helm/">ArgoCD - Helm</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Capture d&#8217;écran du Webhook configuré avec les évènements récents en statut <strong>200</strong></p>
+</li>
+<li>
+<p>Capture d&#8217;écran de la console ArgoCD montrant votre application synchronisée et fonctionnelle</p>
+</li>
+<li>
+<p>Capture d&#8217;écran du champ <strong>image</strong> du déploiement <strong>antennas-front</strong> dans la console ArgoCD</p>
+</li>
+<li>
+<p>Votre application ArgoCD au format YAML</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_préparatifs_pour_le_challenge_6_2"><a class="anchor" href="#_préparatifs_pour_le_challenge_6_2"></a>Préparatifs pour le challenge 6.2</h3>
+<div class="paragraph">
+<p>Faites une copie de votre dépôt Git <strong>antennas-front</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -141,7 +266,7 @@ Ensuite, si ces tests sont concluants, il mettra à jour les manifests Kubernete
 <p>Allez sur la page d&#8217;accueil de <a href="https://gitlab.com">GitLab</a></p>
 </li>
 <li>
-<p>Cliquez sur l&#8217;entrepôt <strong>antennas-front</strong></p>
+<p>Cliquez sur le dépôt <strong>antennas-front</strong></p>
 </li>
 <li>
 <p>Naviguez dans <strong>Paramètres</strong> &gt; <strong>Général</strong></p>
@@ -167,33 +292,17 @@ Ensuite, si ces tests sont concluants, il mettra à jour les manifests Kubernete
 </ul>
 </div>
 <div class="paragraph">
-<p>Divergez les entrepôts suivants : <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a> et <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
+<p>Forkez le dépôt suivant : <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Allez sur l&#8217;entrepôt <a href="https://gitlab.com/nmasse-itix/antennas-gitops">antennas-gitops</a></p>
-</li>
-<li>
-<p>Cliquez sur <strong>Créer une divergence</strong></p>
-</li>
-<li>
-<p>Allez sur l&#8217;entrepôt <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
+<p>Allez sur le dépôt <a href="https://gitlab.com/nmasse-itix/antennas-front">antennas-front</a></p>
 </li>
 <li>
 <p>Cliquez sur <strong>Créer une divergence</strong></p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>Créez trois projets dans OpenShift, correspondant aux environnements de développement, test et production.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">oc new-project antennas-dev
-oc new-project antennas-test
-oc new-project antennas-prod</code></pre>
-</div>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -281,7 +390,7 @@ oc adm policy add-scc-to-user anyuid -z default -n antennas-dev</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Maintenant, nous allons configurer notre pipeline CI/CD pour qu&#8217;il puisse écrire dans l&#8217;entrepôt <strong>antennas-gitops</strong> et pousser les images de conteneur dans quay.io.</p>
+<p>Maintenant, nous allons configurer notre pipeline CI/CD pour qu&#8217;il puisse écrire dans le dépôt <strong>antennas-gitops</strong> et pousser les images de conteneur dans quay.io.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -336,7 +445,7 @@ notez soigneusement le mot de passe généré ainsi que votre identifiant (champ
 <div class="ulist">
 <ul>
 <li>
-<p>Allez sur l&#8217;entrepôt <strong>antennas-front</strong> dans <a href="https://gitlab.com">GitLab</a></p>
+<p>Allez sur le dépôt <strong>antennas-front</strong> dans <a href="https://gitlab.com">GitLab</a></p>
 </li>
 <li>
 <p>Ouvrez <strong>Paramètres</strong> &gt; <strong>Intégration et livraison continues</strong></p>
@@ -375,7 +484,7 @@ Les variables <strong>GITLAB_TOKEN</strong> et <strong>QUAY_PASSWORD</strong> do
 </table>
 </div>
 <div class="paragraph">
-<p>Éditez les fichier <strong>.gitlab-ci.yaml</strong> de l&#8217;entrepôt <strong>antennas-front</strong> et ajustez les lignes suivantes à votre configuration.</p>
+<p>Éditez les fichier <strong>.gitlab-ci.yaml</strong> du dépôt <strong>antennas-front</strong> et ajustez les lignes suivantes à votre configuration.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -392,10 +501,10 @@ variables:
 <div class="ulist">
 <ul>
 <li>
-<p><strong>ANTENNAS_FRONT_IMAGE</strong> est l&#8217;entrepôt quay.io que vous avez créé lors du premier défi</p>
+<p><strong>ANTENNAS_FRONT_IMAGE</strong> est le dépôt quay.io que vous avez créé lors du premier défi</p>
 </li>
 <li>
-<p><strong>ANTENNAS_GITOPS_REPOSITORY</strong> est l&#8217;entrepôt <strong>antennas-gitops</strong> que vous avez copié précédemment</p>
+<p><strong>ANTENNAS_GITOPS_REPOSITORY</strong> est le dépôt <strong>antennas-gitops</strong> que vous avez copié précédemment</p>
 </li>
 <li>
 <p><strong>BOT_EMAIL</strong> est l&#8217;adresse email rattachée à votre compte GitLab</p>
@@ -413,105 +522,17 @@ Si ce n&#8217;est pas le cas, revérifiez les étapes ci-dessus et appelez un fa
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Le pipeline déploie l&#8217;application dans l&#8217;environnement de test mais pas encore dans l&#8217;environnement de production car c&#8217;est tout l&#8217;objet du défi suivant !
-      En attendant, vous pouvez déjà observer les <em>Merge Requests</em> arriver dans l&#8217;entrepôt <strong>antennas-gitops</strong>.
+Le pipeline déploie l&#8217;application dans l&#8217;environnement de test et si vous avez terminé le défi précédent, il déploie aussi dans l&#8217;environnement de production !
+      Vous pouvez observer les <em>Commits</em> arriver dans le dépôt <strong>antennas-gitops</strong>.
 </td>
 </tr>
 </table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_challenge_6_1_beginner"><a class="anchor" href="#_challenge_6_1_beginner"></a>[<strong>Challenge 6.1</strong>]  <em>Beginner</em></h3>
-<div class="paragraph">
-<p>Dans ce défi, votre tâche est de compléter le processus GitOps pour que lorsque la <em>Merge Request</em> (entrepôt <strong>antennas-gitops</strong>) créée par pipeline GitLab CI est fusionnée, les changements sont appliqués à l&#8217;environnement de production (projet <strong>antennas-prod</strong>).</p>
-</div>
-<div class="paragraph">
-<p>Il vous faudra :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Installer l&#8217;opérateur <strong>OpenShift GitOps</strong></p>
-</li>
-<li>
-<p>Ajouter un <em>Webhook</em> à l&#8217;entrepôt <strong>antennas-gitops</strong> pour qu&#8217;un commit/merge déclenche un déploiement.</p>
-</li>
-<li>
-<p>Créer une <strong>Application</strong> ArgoCD</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Ah, et n&#8217;oubliez pas de configurer votre application ArgoCD pour que les manifestes déployés utilisent votre entrepôt quay.io !</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="title">Astuces en vrac</div>
-<div class="ulist">
-<ul>
-<li>
-<p>La commande suivante vous retournera l&#8217;URL du webhook ArgoCD</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>oc get route -n openshift-gitops openshift-gitops-server -o jsonpath='https://{.spec.host}/api/webhook'</pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Le pipeline GitLab CI met 5 minutes à s&#8217;exécuter. Vous pouvez le court-circuiter durant la phase de mise au point en éditant directement les fichiers dans l&#8217;entrepôt <strong>antennas-gitops</strong>.</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Pour vous aider, vous pouvez vous appuyer sur la documentation suivante.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.openshift.com/container-platform/4.11/cicd/gitops/installing-openshift-gitops.html">Installing OpenShift GitOps</a></p>
-</li>
-<li>
-<p><a href="https://argo-cd.readthedocs.io/en/stable/user-guide/helm/">ArgoCD - Helm</a></p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_preuves_à_fournir"><a class="anchor" href="#_preuves_à_fournir"></a>Preuves à fournir</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Capture d&#8217;écran du Webhook configuré avec les évènements récents en statut <strong>200</strong></p>
-</li>
-<li>
-<p>Capture d&#8217;écran de la console ArgoCD montrant votre application synchronisée et fonctionnelle</p>
-</li>
-<li>
-<p>Capture d&#8217;écran du champ <strong>image</strong> du déploiement <strong>antennas-front</strong> dans la console ArgoCD</p>
-</li>
-<li>
-<p>Votre application ArgoCD au format YAML</p>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_challenge_6_2_advanced"><a class="anchor" href="#_challenge_6_2_advanced"></a>[<strong>Challenge 6.2</strong>] <em>Advanced</em></h3>
 <div class="paragraph">
-<p>Dans ce défi, vous devrez améliorer le contenu de l&#8217;entrepôt <strong>antennas-gitops</strong> pour réaliser une livraison applicative au format <em>Blue/Green</em>.</p>
+<p>Dans ce défi, vous devrez améliorer le contenu du dépôt <strong>antennas-gitops</strong> pour réaliser une livraison applicative au format <em>Blue/Green</em>.</p>
 </div>
 <div class="paragraph">
 <p>Le principe est le suivant :</p>
@@ -536,11 +557,11 @@ Le pipeline déploie l&#8217;application dans l&#8217;environnement de test mais
 </ul>
 </div>
 <div class="paragraph">
-<p>Dans la branche <strong>gitops</strong> de l&#8217;entrepôt <strong>antennas-front</strong> vous avez un pipeline GitLab CI adapté à ce type de livraison.
+<p>Dans la branche <strong>blue-green</strong> du dépôt <strong>antennas-front</strong> vous avez un pipeline GitLab CI adapté à ce type de livraison.
 Observez bien son fonctionnement ainsi que les différences avec celui de la branche <strong>main</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Dans la branche <strong>gitops</strong> de l&#8217;entrepôt <strong>antennas-gitops</strong> vous avez un <em>Chart Helm</em> mis à jour avec deux instances de l&#8217;application, une verte et une bleue.</p>
+<p>Dans la branche <strong>blue-green</strong> du dépôt <strong>antennas-gitops</strong> vous avez un <em>Chart Helm</em> mis à jour avec deux instances de l&#8217;application, une verte et une bleue.</p>
 </div>
 <div class="paragraph">
 <p>Votre tâche sera de trouver un moyen de faire la bascule <strong>vert</strong> / <strong>bleu</strong>.</p>
@@ -556,16 +577,16 @@ Observez bien son fonctionnement ainsi que les différences avec celui de la bra
 <div class="ulist">
 <ul>
 <li>
-<p>Le pipeline GitLab CI met à jour le fichier <strong>values-prod.yaml</strong> dans l&#8217;entrepôt <strong>antennas-gitops</strong> avec la cible active (deux valeurs possibles: <strong>blue</strong> et <strong>green</strong>). À vous d&#8217;utiliser cette valeur dans le <em>Chart Helm</em> pour créer l&#8217;objet Kubernetes qui vous permettra de faire la bascule.</p>
+<p>Le pipeline GitLab CI met à jour le fichier <strong>values-prod.yaml</strong> dans le dépôt <strong>antennas-gitops</strong> avec la cible active (deux valeurs possibles: <strong>blue</strong> et <strong>green</strong>). À vous d&#8217;utiliser cette valeur dans le <em>Chart Helm</em> pour créer l&#8217;objet Kubernetes qui vous permettra de faire la bascule.</p>
 </li>
 <li>
-<p>Le pipeline GitLab CI met 5 minutes à s&#8217;exécuter. Vous pouvez le court-circuiter durant la phase de mise au point en éditant directement les fichiers dans l&#8217;entrepôt <strong>antennas-gitops</strong>.</p>
+<p>Le pipeline GitLab CI met 5 minutes à s&#8217;exécuter. Vous pouvez le court-circuiter durant la phase de mise au point en éditant directement les fichiers dans le dépôt <strong>antennas-gitops</strong>.</p>
 </li>
 <li>
 <p>N&#8217;oubliez pas de mettre à jour votre <strong>Application</strong> ArgoCD avec la bonne branche Git (<strong>blue-green</strong>) et les bons paramètres <em>Helm</em> !</p>
 </li>
 <li>
-<p>Pensez à passer la branche <strong>blue-green</strong> de votre entrepôt <strong>antennas-front</strong> en <em>Protected</em> pour qu&#8217;elle puisse accéder aux variables CI/CD !</p>
+<p>Pensez à passer la branche <strong>blue-green</strong> de votre dépôt <strong>antennas-front</strong> en <em>Protected</em> pour qu&#8217;elle puisse accéder aux variables CI/CD !</p>
 </li>
 </ul>
 </div>
