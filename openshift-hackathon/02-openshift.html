@@ -131,8 +131,14 @@ Profitez en pour vous familiariser avec les objets OpenShift (POD, Deployment, S
 <p>Pour ce challenge, créer le projet <strong>"diod"</strong> sur votre cluster OpenShift.</p>
 </div>
 <div class="paragraph">
-<p>Avant de pouvoir utiliser GitLab avec OpenShift il faut que vous installiez un "GitLab runner" sur OpenShift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.
-N&#8217;oubliez pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet GitLab.
+<p>Avant de pouvoir utiliser GitLab avec OpenShift il faut que vous installiez un "GitLab runner" sur OpenShift.  Le runner est fourni par l&#8217;intermédiaire d&#8217;un Operator. Il va falloir que vous exploriez votre cluster pour trouver comment l&#8217;installer.</p>
+</div>
+<div class="paragraph">
+<p>!! Il y a 2 versions différentes de l&#8217;opérateur (1 certifiée Red Hat et 1 version communautaire) !!
+!! Nous avons rencontré un problème avec l&#8217;opérateur certifié (en cours de résolution côté Red Hat) donc merci d&#8217;installer l&#8217;opérateur "Communautaire" !!</p>
+</div>
+<div class="paragraph">
+<p>N&#8217;oubliez pas de créer un secret pour le runner avant de le déployer.  Pour faire cela vous devrez récupérer le token dans la partie Settings &gt; CI/CD &gt; Runners de votre projet GitLab.
 Pour créer le secret, utilisez le manifest suivant (celui de la documentation étant mal formaté) :</p>
 </div>
 <div class="listingblock">
