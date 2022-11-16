@@ -35,7 +35,7 @@ On va jouer un peu avec les "requests" et "limits" de notre déploiement antenna
 ==== Preuves à fournir 
 
 * [*Challenge 4.2.1*] Screenshots du yaml du déploiement 
-* [*Challenge 4.2.1*] Nouvelles valeurs de limits/requests avec la raison pour laquelle vous avez choisi ces valeurs.
+* [*Challenge 4.2.2*] Nouvelles valeurs de limits/requests avec la raison pour laquelle vous avez choisi ces valeurs.
 
 === BONUS challenge
 
